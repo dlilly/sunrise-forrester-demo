@@ -64,7 +64,7 @@
           <div class="col-md-6">
             <div v-for="discount in groupedDiscounts(lineItem)"
               :key="discount.name">
-              <div v-if="discount.discount.centAmount > 0" class="row">
+              <div class="row">
                 <dt class="col-md-9">{{ discount.name }}</dt>
                 <dd class="col-md-3 text-right">
                   <BaseMoney
