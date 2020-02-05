@@ -131,11 +131,11 @@
 
 .single-cart-item {
   margin: 1em;
-  border-bottom: 1px solid $alto;
+}
 
-  &:last-child {
-    border-bottom: 0;
-  }
+.discount-detail {
+  margin: 1em;
+  padding-bottom: 10px;
 }
 
 // Quantity counter / spinner

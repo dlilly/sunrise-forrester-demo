@@ -17,10 +17,12 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-12">
       <div v-for="lineItem in cartLike.lineItems"
            :key="lineItem.id"
            data-test="cart-line-item"
-           class="row single-cart-item">
+           class="row">
+           <div class="row single-cart-item">
         <LineItemInfo :line-item="lineItem"
                       class="col-sm-4 col-xs-12"/>
         <div class="col-sm-4 col-xs-12">
@@ -56,6 +58,28 @@
             </div>
           </div>
         </div>
+        </div>
+        <div class="row discount-detail">
+          <div class="col-md-6"></div>
+          <div class="col-md-6">
+            <div v-for="discountPerQuantity in lineItem.discountedPricePerQuantity"
+              :key="discountPerQuantity.id">
+              <div v-for="discount in discountPerQuantity.discountedPrice.includedDiscounts"
+                :key="discount.name">
+                <div v-if="discount.discountedAmount.centAmount > 0" class="row">
+                  <dt class="col-md-9">{{ discount.discount.name }}</dt>
+                  <dd class="col-md-3">
+                    <BaseMoney
+                      :money="discount.discountedAmount"
+                      :quantity="discountPerQuantity.quantity"
+                      :negate="true"/>
+                  </dd>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
       </div>
     </div>
   </div>
@@ -64,6 +88,7 @@
 <script>
 import LineItemInfo from './LineItemInfo.vue';
 import BasePrice from '../BasePrice.vue';
+import BaseMoney from '../BaseMoney.vue';
 import LineItemQuantityForm from '../../cartdetail/LineItemQuantityForm.vue';
 import LineItemDeleteForm from '../../cartdetail/LineItemDeleteForm.vue';
 
@@ -72,6 +97,7 @@ export default {
     LineItemDeleteForm,
     LineItemQuantityForm,
     BasePrice,
+    BaseMoney,
     LineItemInfo,
   },
 
