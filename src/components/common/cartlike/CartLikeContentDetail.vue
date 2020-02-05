@@ -74,24 +74,6 @@
               </div>
             </div>
           </div>
-
-          <!-- <div class="col-md-6">
-            <div v-for="discountPerQuantity in lineItem.discountedPricePerQuantity"
-              :key="discountPerQuantity.id">
-              <div v-for="discount in discountPerQuantity.discountedPrice.includedDiscounts"
-                :key="discount.name">
-                <div v-if="discount.discountedAmount.centAmount > 0" class="row">
-                  <dt class="col-md-9">{{ discount.discount.name }}</dt>
-                  <dd class="col-md-3">
-                    <BaseMoney
-                      :money="discount.discountedAmount"
-                      :quantity="discountPerQuantity.quantity"
-                      :negate="true"/>
-                  </dd>
-                </div>
-              </div>
-            </div>
-          </div> -->
         </div>
         </div>
       </div>
