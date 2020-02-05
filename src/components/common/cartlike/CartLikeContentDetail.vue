@@ -62,6 +62,20 @@
         <div class="row discount-detail">
           <div class="col-md-6"></div>
           <div class="col-md-6">
+            <div v-for="discount in groupedDiscounts(lineItem)"
+              :key="discount.name">
+              <div v-if="discount.discount.centAmount > 0" class="row">
+                <dt class="col-md-9">{{ discount.name }}</dt>
+                <dd class="col-md-3 text-right">
+                  <BaseMoney
+                    :money="discount.discount"
+                    :negate="true"/>
+                </dd>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-md-6">
             <div v-for="discountPerQuantity in lineItem.discountedPricePerQuantity"
               :key="discountPerQuantity.id">
               <div v-for="discount in discountPerQuantity.discountedPrice.includedDiscounts"
@@ -77,7 +91,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         </div>
       </div>
@@ -124,6 +138,34 @@ export default {
         price.discounted = { value: { ...lineItem.totalPrice } };
       }
       return price;
+    },
+
+    groupedDiscounts(lineItem) {
+      const discountHash = {};
+      lineItem.discountedPricePerQuantity.forEach((element) => {
+        const discount = element.discountedPrice;
+
+        discount.includedDiscounts.forEach((d) => {
+          let discountSummary = discountHash[d.discount.name];
+
+          if (!discountSummary) { // so, first time through the loop
+            discountSummary = {
+              name: d.discount.name,
+              discount: {
+                centAmount: 0,
+                currencyCode: d.discountedAmount.currencyCode,
+                fractionDigits: d.discountedAmount.fractionDigits,
+                __typename: d.discountedAmount.__typename,
+              },
+            };
+          }
+
+          discountSummary.discount.centAmount += d.discountedAmount.centAmount * element.quantity;
+          discountHash[d.discount.name] = discountSummary;
+        });
+      });
+
+      return Object.values(discountHash);
     },
   },
 };
