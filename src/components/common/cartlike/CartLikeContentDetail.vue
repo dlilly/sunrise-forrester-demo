@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- row titles -->
     <div class="row">
       <div class="row text-uppercase hidden-xs cart-items-title">
         <div class="col-sm-6">
@@ -16,65 +17,68 @@
         </div>
       </div>
     </div>
+
+    <!-- cart contents -->
     <div class="row">
-      <div class="col-12">
       <div v-for="lineItem in cartLike.lineItems"
-           :key="lineItem.id"
-           data-test="cart-line-item"
-           class="row">
-           <div class="row single-cart-item">
-        <LineItemInfo :line-item="lineItem"
-                      class="col-sm-4 col-xs-12"/>
-        <div class="col-sm-4 col-xs-12">
-          <div v-if="editable">
-            <LineItemDeleteForm :lineItemId="lineItem.id"
-                                class="col-sm-5 cart-edit-delete"/>
-            <LineItemQuantityForm :lineItemId="lineItem.id"
-                                  :quantity="lineItem.quantity"
-                                  class="col-sm-7 clearfix sm-pull-right"/>
-          </div>
-          <div v-else
-               class="col-sm-6 col-sm-offset-6 col-xs-12 text-center quantity-counter">
-            <span class="visible-xs">{{ $t('quantity') }}:</span>
-            <span data-test="cart-line-item-quantity"
-                  class="quantity-number">
-              {{ lineItem.quantity }}
-            </span>
-          </div>
-        </div>
-        <div>
-          <div class="col-sm-2 col-xs-12 sm-pull-right">
-            <div class="text-right cart-item-price">
-              <span class="visible-xs xs-price-title">{{ $t('price') }}</span>
-              <BasePrice :price="lineItem.price"/>
+        :key="lineItem.id"
+        data-test="cart-line-item"
+        class="row"
+      >
+
+        <!-- line item detail row -->
+        <div class="row single-cart-item">
+          <LineItemInfo :line-item="lineItem"
+                        class="col-sm-4 col-xs-12"/>
+          <div class="col-sm-4 col-xs-12">
+            <div v-if="editable">
+              <LineItemDeleteForm :lineItemId="lineItem.id"
+                                  class="col-sm-5 cart-edit-delete"/>
+              <LineItemQuantityForm :lineItemId="lineItem.id"
+                                    :quantity="lineItem.quantity"
+                                    class="col-sm-7 clearfix sm-pull-right"/>
             </div>
-          </div>
-          <div class="col-sm-2 col-xs-12 sm-pull-right">
-            <div class="text-right cart-item-price">
-              <span class="visible-xs xs-price-title">{{ $t('total') }}</span>
-              <span data-test="cart-line-item-total-price">
-                <BasePrice :price="totalPrice(lineItem)"/>
+            <div v-else
+                class="col-sm-6 col-sm-offset-6 col-xs-12 text-center quantity-counter">
+              <span class="visible-xs">{{ $t('quantity') }}:</span>
+              <span data-test="cart-line-item-quantity"
+                    class="quantity-number">
+                {{ lineItem.quantity }}
               </span>
             </div>
           </div>
-        </div>
-        </div>
-        <div class="row discount-detail">
-          <div class="col-md-6"></div>
-          <div class="col-md-6">
-            <div v-for="discount in groupedDiscounts(lineItem)"
-              :key="discount.name">
-              <div class="row">
-                <dt class="col-md-9">{{ discount.name }}</dt>
-                <dd class="col-md-3 text-right">
-                  <BaseMoney
-                    :money="discount.discount"
-                    :negate="true"/>
-                </dd>
+          <div>
+            <div class="col-sm-2 col-xs-12 sm-pull-right">
+              <div class="text-right cart-item-price">
+                <span class="visible-xs xs-price-title">{{ $t('price') }}</span>
+                <BasePrice :price="lineItem.price"/>
+              </div>
+            </div>
+            <div class="col-sm-2 col-xs-12 sm-pull-right">
+              <div class="text-right cart-item-price">
+                <span class="visible-xs xs-price-title">{{ $t('total') }}</span>
+                <span data-test="cart-line-item-total-price">
+                  <BasePrice :price="totalPrice(lineItem)"/>
+                </span>
               </div>
             </div>
           </div>
         </div>
+        <!-- end LI detail row -->
+
+        <!-- line item discount detail row -->
+        <div class="row discount-detail">
+          <div v-for="discount in groupedDiscounts(lineItem)"
+            :key="discount.name">
+            <div class="row">
+              <dt class="col-md-10 text-right">{{ discount.name }}</dt>
+              <dd class="col-md-2 text-right">
+                <BaseMoney
+                  :money="discount.discount"
+                  :negate="true"/>
+              </dd>
+            </div>
+          </div>
         </div>
       </div>
     </div>
